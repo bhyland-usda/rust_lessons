@@ -26,7 +26,7 @@ cargo new --lib project_name
 ## Creating Tests - Easy Mode
 The easiest way, as there are many, to create an integration test in Rust is to create a test module within the file that you're working on. This way the tests are with the code that they are testing. To do this you do the following in the file that your code is in:
 ```rust
-#[cfg(tests)]
+#[cfg(test)]
 mod tests {
    use super::*; // or use super::{function_name, other_function_name}; or use super::function_to_test;
 
