@@ -1,6 +1,6 @@
-[package]
-name = "common_concepts"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "3"
 
-[dependencies]
+members = [ "arrays","declaring_vars", "functions", "integers", "mutability", "strings", "structs", "traits", "tuples"]
+
+
