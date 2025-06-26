@@ -20,6 +20,16 @@ For a binary project, you can leave out the `--bin` as it's implicit that that's
 cargo new --lib project_name
 ```  
 **Note**: *The `cargo new` command must have the `--lib` flag in it to create a libary crate!*  
+
+### Creating a Project in Existing Directory
+You can create a project in an existing directory using one of the following commands, depending on the type you want.  
+```bash
+cargo init
+```
+
+```bash
+cargo init --lib
+```
   
 ---  
   
