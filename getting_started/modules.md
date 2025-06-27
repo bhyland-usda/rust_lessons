@@ -69,57 +69,91 @@ mod shapes;
 use shapes::{circle::Circle, rectangle::Rectangle, triangle::Triangle};
 
 fn main() {
-    let c = Circle {
-        radius: 5,
-        diameter: 10,
-    };
-
-    let r = Rectangle {
-        width: 10,
-        length: 20,
-    };
-
-    let t = Triangle {
-        base: 2,
-        height: 4,
-    };
+    let c = Circle::new_from_radius(5);
 
     println!("The area of the circle is: {}", c.area());
-    println!("The area of the rectangle is: {}", r.area());
-    println!("The area of the triangle is: {}", t.area());
 }
 ```  
 
 ```rust
 // shapes.rs
 pub mod circle;
-pub mod rectangle;
-pub mod triangle;
+pub mod sphere;
+pub mod cube;
+pub mod prism;
 
-pub trait Shape<T>
-{
-    pub fn area() -> T;
-    pub fn volume() -> T;
+pub use circle::Circle;
+pub use sphere::Sphere;
+pub use cube::Cube;
+pub use prism::Prism;
+
+pub trait Shape<T> {
+    fn area(&self) -> T;
+    fn volume(&self) -> T;
 }
 ```  
 
 ```rust
 // circle.rs
 use super::Shape;
+use crate::utils::{FromFloat, ToFloat, Ops};
+use std::{
+    cmp::{PartialEq, PartialOrd}, fmt::{Debug, Display}, ops::{Add, Div, Mul, Sub}
+};
 
-pub struct Circle
+pub struct Circle<T>
+where T:
+    Clone + Copy + Debug + Display + Add<Output=T> + Sub<Output=T> 
+    + Mul<Output=T> + Div<Output=T> + PartialEq + PartialOrd
+    + FromFloat + ToFloat
 {
-    radius: f64,
-    diameter: f64,
+    radius: T,
+    diameter: T,
 }
 
-impl<f64> Shape<f64> for Circle
+impl<T> Circle<T>
+where T:
+    Clone + Copy + Debug + Display + Add<Output=T> + Sub<Output=T> 
+    + Mul<Output=T> + Div<Output=T> + PartialEq + PartialOrd
+    + FromFloat + ToFloat
 {
-    fn area(&self) -> T {
-        f64::consts::PI * (self.radius * self.radius)
+    pub fn new_with_radius(radius: T) -> Self {
+        Self {
+            radius,
+            diameter: radius * T::from_f64(2.0)
+        }
     }
 
-    fn volumen(&self) -> f64
+    pub fn new_with_diameter(diameter: T) -> Self {
+        Self {
+            diameter,
+            radius: diameter / T::from_f64(2.0),
+        }
+    }
+
+    pub fn radius(&self) -> T {
+        self.radius
+    }
+
+    pub fn diameter(&self) -> T {
+        self.diameter
+    }
+}
+
+impl<T> Shape<T> for Circle<T>
+where T:
+    Clone + Copy + Debug + Display + Add<Output=T> + Sub<Output=T> 
+    + Mul<Output=T> + Div<Output=T> + PartialEq + PartialOrd
+    + FromFloat + ToFloat
+{
+    fn area(&self) -> T {
+        let pi = T::from_f64(std::f64::consts::PI);
+        pi * Ops::square(self.radius)
+    }
+
+    fn volume(&self) -> T {
+        T::from_f64(0.0)
+    }
 }
 ```
 
@@ -154,70 +188,84 @@ create in the directory.
 pub mod utils;
 mod shapes;
 
-use shapes::{circle::Circle, cube::Cube, triangle::Triangle};
+use shapes::{circle::Circle, cube::Cube};
 
 fn main() {
-    let c = Circle {
-        radius: 5,
-        diameter: 10,
-    };
+    let c = Circle::new_from_diameter(10);
 
-    let r = Rectangle {
-        width: 10,
-        length: 20,
-    };
-
-    let t = Triangle {
-        base: 2,
-        height: 4,
-    };
+    let cube = Cube::new(3);
 
     println!("The area of the circle is: {}", c.area());
-    println!("The area of the rectangle is: {}", r.area());
-    println!("The area of the triangle is: {}", t.area());
+    println!("The area of the cube is: {}", cube.area());
 }
 ```  
 
 ```rust
 // src/shapes/mod.rs
 pub mod circle;
-pub mod rectangle;
-pub mod triangle;
+pub mod sphere;
+pub mod cube;
+pub mod prism;
 
-pub trait Shape<T>
-{
-    pub fn area() -> T;
-    pub fn volume() -> T;
+pub use circle::Circle;
+pub use sphere::Sphere;
+pub use cube::Cube;
+pub use prism::Prism;
+
+pub trait Shape<T> {
+    fn area(&self) -> T;
+    fn volume(&self) -> T;
 }
 ```  
 
 ```rust
-// shapes/rectangle.rs
-use super::Shapes;
-use std::ord::{Add, Sub};
-use std::cmp::{PartialEq, PartialOrd};
+// shapes/cube.rs
+use std::{
+    cmp::{PartialEq, PartialOrd}, 
+    fmt::{Debug, Display}, 
+    ops::{Add, Div, Mul, Sub},
+};
+use super::Shape;
+use crate::utils::{FromFloat, Ops, ToFloat};
 
 pub struct Cube<T> 
 where T:
-    // These traits describe numerical values, both int and float
-    Debug + Clone + Copy + Add + Sub + Mul + Div + PartialEq + PartialOrd 
+    Clone + Copy + Debug + Display + Add<Output=T> + Sub<Output=T> 
+    + Mul<Output=T> + Div<Output=T> + PartialEq + PartialOrd
+    + FromFloat + ToFloat
 {
-    width: T,
-    length: T,
-    height: T,
+    sides: T,
 }
 
-impl<T> Shapes<T> for Cube<T> 
+impl<T> Cube<T>
 where T:
-    // These traits describe numerical values, both int and float
-    Debug + Clone + Copy + Add + Sub + Mul + Div + PartialEq + PartialOrd
+    Clone + Copy + Debug + Display + Add<Output=T> + Sub<Output=T> 
+    + Mul<Output=T> + Div<Output=T> + PartialEq + PartialOrd
+    + FromFloat + ToFloat
 {
-    fn area() -> T {
-        length * width
+    pub fn new(sides: T) -> Self {
+        Self {
+            sides
+        }
     }
 
-    fn volume() -> T {
-        length * width * height
+    pub fn sides(&self) -> T {
+        self.sides
+    }
+}
+
+impl<T> Shape<T> for Cube<T>
+where T:
+    Clone + Copy + Debug + Display + Add<Output=T> + Sub<Output=T>
+    + Mul<Output=T> + Div<Output=T> + PartialEq + PartialOrd
+    + FromFloat + ToFloat
+{
+    fn area(&self) -> T {
+        T::from_f64(6.0) * Ops::square(self.sides)
+    }
+
+    fn volume(&self) -> T {
+        Ops::cube(self.sides)
     }
 }
 ```
