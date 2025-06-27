@@ -49,45 +49,45 @@
             my_string = String::from("Still a string");
 */
 
-fn declare_ints() -> (i64, i32) {
-    // Implicit declaration
-    let int64 = 42;
-    // Explicit declaration
-    let int32 = 32i32;
-    
-    // Returning this successfully proves the variables were declared as the types specified.
-    (int64, int32)
-}
-
-fn declare_string_types() -> (&'static str, String) {
-    // Explicit declaraton
-    let ret_str: &str = "This is the &str";
-    // Implicit declaration
-    let ret_string = String::from("This is the string");
-
-    // Returning this successfully proves the variables were declared as the types specified.
-    (ret_str, ret_string)
-}
-
-// Doesn't return anything because changes the elements in place.
-fn declare_mutable_string_vec(input: &mut Vec<String>) {
-    // Create a mutable i64 variable, implicitly
-    let mut count = 0;
-
-    // Loop through each element of the input Vec and change
-    // it to the count.
-    input.into_iter().for_each(|ele| {
-        // Dereference the element and change the value to count as a String
-        *ele = count.to_string();
-        // Update the count
-        count += 1;         
-    });
-}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    // Functions to test
+    fn declare_ints() -> (i64, i32) {
+        // Implicit declaration
+        let int64 = 42;
+        // Explicit declaration
+        let int32 = 32i32;
+        
+        // Returning this successfully proves the variables were declared as the types specified.
+        (int64, int32)
+    }
 
+    fn declare_string_types() -> (&'static str, String) {
+        // Explicit declaraton
+        let ret_str: &str = "This is the &str";
+        // Implicit declaration
+        let ret_string = String::from("This is the string");
+
+        // Returning this successfully proves the variables were declared as the types specified.
+        (ret_str, ret_string)
+    }
+
+    // Doesn't return anything because changes the elements in place.
+    fn declare_mutable_string_vec(input: &mut Vec<String>) {
+        // Create a mutable i64 variable, implicitly
+        let mut count = 0;
+
+        // Loop through each element of the input Vec and change
+        // it to the count.
+        input.into_iter().for_each(|ele| {
+            // Dereference the element and change the value to count as a String
+            *ele = count.to_string();
+            // Update the count
+            count += 1;         
+        });
+    }
+
+    // Testing Functions
     #[test]
     fn declare_ints_test() {
         // Declare a tuple variable of (i64, i32)

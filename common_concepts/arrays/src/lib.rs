@@ -19,14 +19,14 @@
         let zeros = [0; 10]; <- Initialized the array with 10 elements all with the value of 0.
 */
 
-fn give_me_ten_zeros() -> Box<[u32]> {
-    Box::new([0; 10])
-}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    // Function to test
+    fn give_me_ten_zeros() -> Box<[u32]> {
+        Box::new([0; 10])
+    }
 
+    // Test the function
     #[test]
     fn test_give_me_ten_zeros() {
         give_me_ten_zeros().iter().for_each(|ele| {

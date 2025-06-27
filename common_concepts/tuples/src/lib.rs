@@ -10,16 +10,16 @@
         let str_tuple: (&str, &str, &str) = ("Hello,", " there", " guy!");
 */
 
-fn return_tuple() -> (&'static str, String, f32) {
-    let the_answer = ("The ", "answer is:".to_string(), 42.0);
-
-    the_answer
-}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    // Function to test
+    fn return_tuple() -> (&'static str, String, f32) {
+        let the_answer = ("The ", "answer is:".to_string(), 42.0);
 
+        the_answer
+    }
+
+    // Test the function
     #[test]
     fn return_tuple_test() {
         let (the, answer_is, fourty_2) = return_tuple();

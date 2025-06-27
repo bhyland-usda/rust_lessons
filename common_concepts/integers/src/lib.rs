@@ -15,25 +15,22 @@
     u128: 128-bit - u128::MIN = 0 u128::MAX = 340,282,366,920,938,463,463,374,607,431,768,211,455
 */
 
-fn signed_ints() -> (i8, i16, i32, i64, i128) {
-    (i8::MAX, i16::MAX, i32::MAX, i64::MAX, i128::MAX)
-}
-
-fn unsigned_ints() -> (u8, u16, u32, u64, u128) {
-    (u8::MAX, u16::MAX, u32::MAX, u64::MAX, u128::MAX)
-}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn signed_ints_test() {
+        let signed_ints = || {
+            (i8::MAX, i16::MAX, i32::MAX, i64::MAX, i128::MAX)
+        };
+
         assert_eq!(signed_ints(), (i8::MAX, i16::MAX, i32::MAX, i64::MAX, i128::MAX));
     }
 
     #[test]
     fn unsigned_ints_test() {
+        let unsigned_ints = || {
+            (u8::MAX, u16::MAX, u32::MAX, u64::MAX, u128::MAX)
+        };
         assert_eq!(unsigned_ints(), (u8::MAX, u16::MAX, u32::MAX, u64::MAX, u128::MAX));
     }
 }

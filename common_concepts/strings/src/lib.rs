@@ -31,16 +31,14 @@
 
 */
 
-fn gravity_law() -> String {
-    String::from("What goes \u{2191} must come \u{2193}!")
-}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn gravity_law_test() {
+        let gravity_law = || {
+            String::from("What goes \u{2191} must come \u{2193}!")
+        };
+
         assert_eq!(gravity_law(), "What goes ↑ must come ↓!".to_string());
     }
 }
